@@ -1,0 +1,63 @@
+---
+title: "FML-Ass 1"
+author: "ANANDAGANIREDDY_N"
+date: "2024-02-04"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+
+**1.Importing the Dataset:**
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Downloading the Behavioral Risk Factor dataset from Kaggle.
+url <- "https://www.kaggle.com/datasets/gennadiimanzhos/behavioral-risk-factor-hrqol?resource=download"
+BRF_data <- read.csv("C://Users//dell//Dropbox//My PC (DESKTOP-LE4HNP6)//Desktop//FML-Spring//BRF_Data.csv")
+```
+
+```{r}
+# First few rows of the dataset
+head(BRF_data)
+```
+**2.Printing the Descriptive Statistics:**
+```{r}
+# Summary statistics for quantitative variables
+summary(BRF_data$Data_Value_Unit) 
+```
+```{r}
+# Frequency table for categorical variable
+table(BRF_data$Topic)
+```
+**3. Transforming the Variable:**
+```{r}
+library("dplyr")
+BRF_data <- BRF_data %>%
+ mutate(Data_Value = sqrt(Data_Value))
+head(BRF_data)
+```
+**4. Plot Quantitative and Scatter plot:**
+```{r}
+# Creating categories for High_Confidence_Limit
+BRF_data$High_Confidence_Category <- cut(BRF_data$High_Confidence_Limit,
+                                         breaks = c(0, 10, 25, 50, Inf),
+                                         labels = c("0-10", "11-25", "26-50", ">50"),
+                                         include.lowest = TRUE)
+
+# Boxplot for quantitative variable across different categories
+boxplot(Year ~ High_Confidence_Category, data = BRF_data,
+        main = "Boxplot of Year by High Confidence Limit",
+        xlab = "Year", ylab = "High Confidence Limit")
+
+```
+
+```{r}
+# Scatterplot for two quantitative variables
+plot(BRF_data$Low_Confidence_Limit, BRF_data$High_Confidence_Limit, main = "Scatterplot of Low Confidence Limit vs High Confidence Limit", xlab = "Low Confidence Limit", ylab = "High Confidence Limit", col="violet")
+```
+
+
